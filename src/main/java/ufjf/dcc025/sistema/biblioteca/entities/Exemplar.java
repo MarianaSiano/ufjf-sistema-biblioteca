@@ -5,7 +5,6 @@ import java.lang.*;
 
 public class Exemplar extends Livro {
 
-    private Integer idExemplar;
     private boolean ehNaoCircula;
     private boolean disponivel;
     private Livro livro;
@@ -13,10 +12,6 @@ public class Exemplar extends Livro {
     public Exemplar(String nome, String autor, String editora, int quantAcervo, int quantEmprestimo, String ano, String edicao, Livro livro) {
         super(nome, autor, editora, quantAcervo, quantEmprestimo, ano, edicao);
         this.livro = livro;
-    }
-    
-    public Integer getIdExemplar() {
-        return idExemplar;
     }
 
     public boolean getEhAcervo() {
