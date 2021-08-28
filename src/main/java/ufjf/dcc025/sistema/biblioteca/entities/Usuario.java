@@ -2,39 +2,35 @@
 
 package ufjf.dcc025.sistema.biblioteca.entities;
 
-public class Usuario {
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
+public abstract class Usuario implements Serializable { 
     
-    private static int idCount;
-    private int id;
+    @Id
+    private Integer matricula;
     private String nome;
     private String cpf;
-    private String dataNascimento;
+    private Date dataNascimento;
     private String senha;
     
     public Usuario() {
-        
     }
 
-    public Usuario(String nome, String cpf, String dataNascimento, String senha) {
-        this.id = idCount;
+    public Usuario(Integer matricula, String nome, String cpf, Date dataNascimento, String senha) {
+        this.matricula = matricula;
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.senha = senha;
-        
-        idCount++;
     }
 
-    public static int getIdCount() {
-        return idCount;
-    }
-
-    public static void setIdCount(int idCount) {
-        Usuario.idCount = idCount;
-    }
-
-    public int getId() {
-        return id;
+    public Integer getMatricula() {
+        return matricula;
     }
 
     public String getNome() {
@@ -53,11 +49,11 @@ public class Usuario {
         this.cpf = cpf;
     }
 
-    public String getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -70,7 +66,33 @@ public class Usuario {
     }
 
     @Override
-    public String toString() {
-        return "Usuario{" + "id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", dataNascimento=" + dataNascimento + ", senha=" + senha + '}';
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.matricula);
+        hash = 41 * hash + Objects.hashCode(this.nome);
+        hash = 41 * hash + Objects.hashCode(this.cpf);
+        hash = 41 * hash + Objects.hashCode(this.dataNascimento);
+        hash = 41 * hash + Objects.hashCode(this.senha);
+        return hash;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (!Objects.equals(this.matricula, other.matricula)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

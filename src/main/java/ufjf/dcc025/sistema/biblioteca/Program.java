@@ -2,8 +2,6 @@
 
 package ufjf.dcc025.sistema.biblioteca;
 
-import javax.swing.JFrame;
-import ufjf.dcc025.sistema.biblioteca.layouts.ListaLivros;
 import ufjf.dcc025.sistema.biblioteca.layouts.Login;
 import ufjf.dcc025.sistema.biblioteca.services.BibliotecaService;
 
