@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @MappedSuperclass
 public abstract class Usuario implements Serializable { 
@@ -15,6 +17,8 @@ public abstract class Usuario implements Serializable {
     private Integer matricula;
     private String nome;
     private String cpf;
+    
+    @Temporal(TemporalType.DATE)
     private Date dataNascimento;
     private String senha;
     

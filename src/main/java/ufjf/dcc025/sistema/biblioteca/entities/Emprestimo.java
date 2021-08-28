@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "Emprestimo")
@@ -21,8 +23,14 @@ public class Emprestimo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    
+    @Temporal(TemporalType.DATE)
     private Date dataEmprestimo;
+    
+    @Temporal(TemporalType.DATE)
     private Date dataParaDevolucao;
+    
+    @Temporal(TemporalType.DATE)
     private Date dataDeDevolucao;
     
     @ManyToOne
