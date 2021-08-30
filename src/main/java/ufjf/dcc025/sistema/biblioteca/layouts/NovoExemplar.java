@@ -5,6 +5,13 @@
  */
 package ufjf.dcc025.sistema.biblioteca.layouts;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import ufjf.dcc025.sistema.biblioteca.entities.Exemplar;
+import ufjf.dcc025.sistema.biblioteca.entities.Funcionario;
+import ufjf.dcc025.sistema.biblioteca.entities.Livro;
+import ufjf.dcc025.sistema.biblioteca.services.BibliotecaService;
+
 /**
  *
  * @author michel.andrade
@@ -16,6 +23,7 @@ public class NovoExemplar extends javax.swing.JFrame {
      */
     public NovoExemplar() {
         initComponents();
+        setLocationRelativeTo( null );
     }
 
     /**
@@ -28,42 +36,16 @@ public class NovoExemplar extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jLabel1 = new javax.swing.JLabel();
-        jTextFieldId = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jRadioButtonSim = new javax.swing.JRadioButton();
-        jRadioButtonNão = new javax.swing.JRadioButton();
-        jLabel3 = new javax.swing.JLabel();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
         jTextFieldLivro = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Id");
-
-        jLabel2.setText("NãoCircula");
-
-        jRadioButtonSim.setText("Sim");
-
-        jRadioButtonNão.setText("Não");
-
-        jLabel3.setText("Disponivel");
-
-        jRadioButton3.setText("Sim");
-
-        jRadioButton4.setText("Não");
-        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton4ActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setText("Livro");
+        jLabel4.setText("Cód. Livro");
 
         jTextFieldLivro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,86 +70,66 @@ public class NovoExemplar extends javax.swing.JFrame {
             }
         });
 
+        jCheckBox1.setText("Não circula");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(146, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(172, 172, 172))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(92, 92, 92)
+                                .addComponent(jTextFieldLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel4))
+                        .addGap(100, 100, 100))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jRadioButton3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jRadioButton4))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jRadioButtonSim)
-                                .addGap(18, 18, 18)
-                                .addComponent(jRadioButtonNão))
-                            .addComponent(jTextFieldLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldId, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(171, 171, 171)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(158, 158, 158)
                         .addComponent(jButton2)
                         .addGap(39, 39, 39)
-                        .addComponent(jButton1)))
-                .addContainerGap(161, Short.MAX_VALUE))
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(208, 208, 208)
+                        .addComponent(jCheckBox1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(27, 27, 27)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jRadioButtonSim)
-                    .addComponent(jRadioButtonNão))
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jRadioButton3)
-                    .addComponent(jRadioButton4))
-                .addGap(34, 34, 34)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextFieldLivro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jCheckBox1)
+                .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(25, 25, 25))
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton4ActionPerformed
 
     private void jTextFieldLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldLivroActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldLivroActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        ListarEmprestimos listarEmp = new ListarEmprestimos();
-        listarEmp.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        listarEmp.setVisible(true);
+        ListaLivros listaLivros = new ListaLivros();
+        listaLivros.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        listaLivros.setVisible(true);
 
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -176,36 +138,22 @@ public class NovoExemplar extends javax.swing.JFrame {
         // TODO add your handling code here:
         Livro livro = null;
         Funcionario funcionario = BibliotecaService.getFuncLogado();
-        Usuario usuario = null;
-        int diasDevolucao = Integer.parseInt((jTextField3.getText()));
-
-        for (Livro l:BibliotecaService.getLivros()) {
-            if(l.getId() == Integer.parseInt(jTextField1.getText())) {
-                livro = l;
-                break;
-            }
-        }
-
-        for (Usuario u:BibliotecaService.getUsuarios()) {
-            if(u.getCpf().equals(jTextField2.getText())) {
-                usuario = u;
-                break;
-            }
-        }
-
+        
+        int idLivro = Integer.parseInt(jTextFieldLivro.getText());
+        boolean ehNaoCircula = jCheckBox1.isSelected();
+        
+        livro = BibliotecaService.getLivro(idLivro);
+        
         if (livro == null) {
-            JOptionPane.showMessageDialog(this, "Código do livro não existe!");
-        } else if (usuario == null) {
-            JOptionPane.showMessageDialog(this, "CPF não cadastrado!");
+            JOptionPane.showMessageDialog(this, "Código do livro não encontrado.");
         } else {
-            BibliotecaService.getEmprestimos().add(new Emprestimo(livro, funcionario, usuario, diasDevolucao));
-            BibliotecaService.updateEmprestimos();
-
-            ListarEmprestimos listaEmprestimos = new ListarEmprestimos();
-            listaEmprestimos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            listaEmprestimos.setVisible(true);
+            BibliotecaService.createExemplar(new Exemplar(ehNaoCircula, livro));
+            
+            NovoExemplar novoExemplar = new NovoExemplar();
+            novoExemplar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            novoExemplar.setVisible(true);
             dispose();
-        }
+        }        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -247,16 +195,9 @@ public class NovoExemplar extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JRadioButton jRadioButtonNão;
-    private javax.swing.JRadioButton jRadioButtonSim;
-    private javax.swing.JTextField jTextFieldId;
     private javax.swing.JTextField jTextFieldLivro;
     // End of variables declaration//GEN-END:variables
 }

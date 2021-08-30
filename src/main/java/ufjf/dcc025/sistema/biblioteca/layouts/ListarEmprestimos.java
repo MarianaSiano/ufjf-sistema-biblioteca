@@ -27,15 +27,17 @@ public class ListarEmprestimos extends javax.swing.JFrame {
     public void addRowToJtable(){
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
-        Object rowData[] = new Object[7];
+        Object rowData[] = new Object[9];
         for(int i = 0; i<list.size();i++){
             rowData[0] = list.get(i).getId();
-            rowData[1] = list.get(i).getLivro().getId();
-            rowData[2] = list.get(i).getUsuario().getCpf();
-            rowData[3] = list.get(i).getFuncionario().getNome();
-            rowData[4] = list.get(i).getDataEmprestimo();
-            rowData[5] = list.get(i).getDataDevolucao();
-            rowData[6] = list.get(i).getStatusDevolucao();
+            rowData[1] = list.get(i).getExemplar().getLivro().getId();
+            rowData[2] = list.get(i).getExemplar().getId();
+            rowData[3] = list.get(i).getAluno().getCpf();
+            rowData[4] = list.get(i).getFuncionario().getNome();
+            rowData[5] = list.get(i).getDataEmprestimo();
+            rowData[6] = list.get(i).getDataParaDevolucao();
+            rowData[7] = list.get(i).getDataDeDevolucao() != null;
+            rowData[8] = list.get(i).getDataDeDevolucao();
             model.addRow(rowData);
         }
     }
@@ -57,14 +59,14 @@ public class ListarEmprestimos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id Empréstimo", "Cod. do Livro", "CPF Usuario", "Funcionário Resp", "Data de Empréstimo", " Data para Devolução", "Status de Entrega"
+                "Id Empréstimo", "Cod. do Livro", "Cod. do Exemplar", "CPF Usuario", "Funcionário Resp", "Data de Empréstimo", "Data para Devolução", "Status de Entrega", "Data de Devolução"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -150,10 +152,13 @@ public class ListarEmprestimos extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel tblModel = (DefaultTableModel)jTable1.getModel();
         
-        list.get(
+        Emprestimo emp = list.get(
             Integer.parseInt(tblModel.getValueAt(jTable1.getSelectedRow(), 0).toString()) - 1
-        ).setStatusDevolucao(true);
-        BibliotecaService.updateEmprestimos();
+        );
+        emp.setDataDeDevolucao();
+        
+        BibliotecaService.updateEmprestimo(emp);
+        BibliotecaService.updateExemplar(emp.getExemplar());
 
         ListarEmprestimos listEmpr = new ListarEmprestimos();
         listEmpr.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

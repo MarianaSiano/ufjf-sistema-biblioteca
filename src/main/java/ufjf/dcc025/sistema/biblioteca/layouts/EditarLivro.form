@@ -246,7 +246,7 @@
             <StringItem index="0" value="Portugues"/>
             <StringItem index="1" value="Ingles"/>
             <StringItem index="2" value="Espanhol"/>
-            <StringItem index="3" value=" "/>
+            <StringItem index="3" value=""/>
           </StringArray>
         </Property>
       </Properties>

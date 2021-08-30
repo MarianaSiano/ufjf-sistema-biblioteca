@@ -47,6 +47,11 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema Biblioteca");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jLabel1.setLabelFor(campoLogin);
         jLabel1.setText("Login");
@@ -122,7 +127,7 @@ public class Login extends javax.swing.JFrame {
         
         for (Aluno al:alunos) {
             if (al.getCpf().equals(login) && al.getSenha().equals(senha)) {
-                ListaExemplaresUsuario lisLivUsr = new ListaExemplaresUsuario();
+                ListaLivrosUsuario lisLivUsr = new ListaLivrosUsuario();
                 lisLivUsr.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 lisLivUsr.setVisible(true);
                 dispose();
@@ -144,6 +149,10 @@ public class Login extends javax.swing.JFrame {
         
         JOptionPane.showMessageDialog(this, "Login ou senha incorretos!");
     }//GEN-LAST:event_botaoLoginActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments

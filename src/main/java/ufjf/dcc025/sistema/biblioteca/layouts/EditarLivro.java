@@ -123,7 +123,7 @@ public class EditarLivro extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel9.setText("Editar Livro");
 
-        jComboBoxIdioma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Portugues", "Ingles", "Espanhol", " " }));
+        jComboBoxIdioma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Portugues", "Ingles", "Espanhol", "" }));
 
         jComboBoxAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021" }));
 
@@ -238,7 +238,7 @@ public class EditarLivro extends javax.swing.JFrame {
         this.livro.setIsbn(jTextFieldIsbn.getText());
         this.livro.setEdicao(jTextFieldEdicao.getText());
         
-        BibliotecaService.updateLivros();
+        BibliotecaService.updateLivro(this.livro);
         
         ListaLivros lista = new ListaLivros();
         lista.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

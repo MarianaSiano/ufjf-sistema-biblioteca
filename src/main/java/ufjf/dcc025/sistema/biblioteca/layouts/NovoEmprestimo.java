@@ -4,7 +4,9 @@ package ufjf.dcc025.sistema.biblioteca.layouts;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import ufjf.dcc025.sistema.biblioteca.entities.Aluno;
 import ufjf.dcc025.sistema.biblioteca.entities.Emprestimo;
+import ufjf.dcc025.sistema.biblioteca.entities.Exemplar;
 import ufjf.dcc025.sistema.biblioteca.entities.Funcionario;
 import ufjf.dcc025.sistema.biblioteca.entities.Livro;
 import ufjf.dcc025.sistema.biblioteca.entities.Usuario;
@@ -33,19 +35,15 @@ public class NovoEmprestimo extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Novo Empréstimo");
 
-        jLabel1.setText("Cód. Livro");
+        jLabel1.setText("Cód. Exemplar");
 
-        jLabel2.setText("CPF Usuário");
-
-        jLabel3.setText("Dias para devolver");
+        jLabel2.setText("Matrícula Aluno");
 
         jButton1.setText("Cadastrar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -68,22 +66,20 @@ public class NovoEmprestimo extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
+                        .addGap(62, 62, 62)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
                             .addComponent(jLabel2)
                             .addComponent(jLabel1))
                         .addGap(74, 74, 74)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
+                        .addGap(89, 89, 89)
                         .addComponent(jButton2)
                         .addGap(39, 39, 39)
                         .addComponent(jButton1)))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,15 +92,11 @@ public class NovoEmprestimo extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60)
+                .addGap(58, 58, 58)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();
@@ -120,32 +112,24 @@ public class NovoEmprestimo extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        Livro livro = null;
+        Exemplar exemplar = null;
         Funcionario funcionario = BibliotecaService.getFuncLogado();
-        Usuario usuario = null;
-        int diasDevolucao = Integer.parseInt((jTextField3.getText()));
+        Aluno aluno = null;
         
-        for (Livro l:BibliotecaService.getLivros()) {
-            if(l.getId() == Integer.parseInt(jTextField1.getText())) {
-                livro = l;
-                break;
-            }
-        }
+        exemplar = BibliotecaService.getExemplar(Integer.parseInt(jTextField1.getText()));
+        aluno = BibliotecaService.getAluno(Integer.parseInt(jTextField2.getText()));
         
-        for (Usuario u:BibliotecaService.getUsuarios()) {
-            if(u.getCpf().equals(jTextField2.getText())) {
-                usuario = u;
-                break;
-            }
-        }
-        
-        if (livro == null) {
-            JOptionPane.showMessageDialog(this, "Código do livro não existe!");
-        } else if (usuario == null) {
-            JOptionPane.showMessageDialog(this, "CPF não cadastrado!");
+        if (exemplar == null) {
+            JOptionPane.showMessageDialog(this, "Código do exemplar não existe!");
+        } else if (aluno == null) {
+            JOptionPane.showMessageDialog(this, "Matrícula não encontrada!");
         } else {
-            BibliotecaService.getEmprestimos().add(new Emprestimo(livro, funcionario, usuario, diasDevolucao));
-            BibliotecaService.updateEmprestimos();
+            try {
+                BibliotecaService.createEmprestimo(new Emprestimo(exemplar, funcionario, aluno));
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Exemplar já se encontra emprestado!");
+            }
+            
             
             ListarEmprestimos listaEmprestimos = new ListarEmprestimos();
             listaEmprestimos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -194,9 +178,7 @@ public class NovoEmprestimo extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }

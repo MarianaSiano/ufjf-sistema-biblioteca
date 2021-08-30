@@ -4,6 +4,7 @@ package ufjf.dcc025.sistema.biblioteca.layouts;
 
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import ufjf.dcc025.sistema.biblioteca.entities.Livro;
 import ufjf.dcc025.sistema.biblioteca.services.BibliotecaService;
@@ -31,17 +32,19 @@ public class ListaLivros extends javax.swing.JFrame {
     public void addRowToJtable(){
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
-        Object rowData[] = new Object[9];
+        Object rowData[] = new Object[11];
         for(int i = 0; i<list.size();i++){
             rowData[0] = list.get(i).getId();
-            rowData[1] = list.get(i).getNome();
+            rowData[1] = list.get(i).getTitulo();
             rowData[2] = list.get(i).getAutor();
             rowData[3] = list.get(i).getEditora();
-            rowData[4] = list.get(i).getQuantAcervo();
-            rowData[5] = list.get(i).getQuantEmprestimo();
-            rowData[6] = list.get(i).getTotalDisponivel();
-            rowData[7] = list.get(i).getAno();
-            rowData[8] = list.get(i).getEdicao();
+            rowData[4] = list.get(i).getAno();
+            rowData[5] = list.get(i).getEdicao();
+            rowData[6] = list.get(i).getNumPaginas();
+            rowData[7] = list.get(i).getIsbn();
+            rowData[8] = list.get(i).getIdioma();
+            rowData[9] = list.get(i).getQuantDispNaoCircula();
+            rowData[10] = list.get(i).getQuantDispEmprestimo();
             model.addRow(rowData);
         }
     }
@@ -60,6 +63,7 @@ public class ListaLivros extends javax.swing.JFrame {
         Cadastro = new javax.swing.JButton();
         Voltar = new javax.swing.JButton();
         Editar = new javax.swing.JButton();
+        Editar1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,9 +72,24 @@ public class ListaLivros extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Titulo", "Autor", "Editora", "Total No Acervo", "Total Para Emprestimo", "Total Disponivel", "Ano", "Edição"
+                "Id", "Titulo", "Autor", "Editora", "Ano", "Edição", "Nº Pág.", "ISBN", "Idioma", "Qtd. Disp. Acervo", "Qtd. Disp. Empr."
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         Cadastro.setText("Cadastro");
@@ -94,6 +113,13 @@ public class ListaLivros extends javax.swing.JFrame {
             }
         });
 
+        Editar1.setText("Ver exemplares");
+        Editar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Editar1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -105,6 +131,8 @@ public class ListaLivros extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Voltar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Editar1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Editar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Cadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -119,7 +147,8 @@ public class ListaLivros extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Cadastro)
                     .addComponent(Voltar)
-                    .addComponent(Editar))
+                    .addComponent(Editar)
+                    .addComponent(Editar1))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
@@ -150,6 +179,19 @@ public class ListaLivros extends javax.swing.JFrame {
         telaLivro.setVisible(true);
         dispose();
     }//GEN-LAST:event_EditarActionPerformed
+
+    private void Editar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Editar1ActionPerformed
+        Integer id = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
+        
+        if (jTable1.getSelectedRow() >= 0) {
+            ListaExemplares telaEmprestimos = new ListaExemplares(BibliotecaService.getLivro(id));
+            telaEmprestimos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            telaEmprestimos.setVisible(true);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Nenhum livro escolhido.");
+        }
+    }//GEN-LAST:event_Editar1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -189,6 +231,7 @@ public class ListaLivros extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cadastro;
     private javax.swing.JButton Editar;
+    private javax.swing.JButton Editar1;
     private javax.swing.JButton Voltar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

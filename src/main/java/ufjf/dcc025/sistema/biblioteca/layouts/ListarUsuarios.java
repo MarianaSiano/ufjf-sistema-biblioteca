@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
+import ufjf.dcc025.sistema.biblioteca.entities.Aluno;
 import ufjf.dcc025.sistema.biblioteca.entities.Funcionario;
 import ufjf.dcc025.sistema.biblioteca.entities.Usuario;
 import ufjf.dcc025.sistema.biblioteca.services.BibliotecaService;
@@ -13,13 +14,13 @@ import ufjf.dcc025.sistema.biblioteca.services.BibliotecaService;
 public class ListarUsuarios extends javax.swing.JFrame {
 
     private List <Funcionario> listFunc;
-    private List <Usuario> listUsr;
+    private List <Aluno> listAluno;
     public ListarUsuarios() {
         initComponents();
         
         setLocationRelativeTo(null);
         this.listFunc = BibliotecaService.getFuncionarios();
-        this.listUsr = BibliotecaService.getUsuarios();
+        this.listAluno = BibliotecaService.getAlunos();
 
         this.addRowToJtable();
     }
@@ -28,8 +29,8 @@ public class ListarUsuarios extends javax.swing.JFrame {
         return this.listFunc;
     }
     
-    List <Usuario> getListaUsr (){
-        return this.listUsr;
+    List <Aluno> getListaUsr (){
+        return this.listAluno;
     }
     
     public void addRowToJtable(){
@@ -37,7 +38,7 @@ public class ListarUsuarios extends javax.swing.JFrame {
 
         Object rowData[] = new Object[5];
         for(int i = 0; i<listFunc.size();i++){
-            rowData[0] = listFunc.get(i).getId();
+            rowData[0] = listFunc.get(i).getMatricula();
             rowData[1] = listFunc.get(i).getNome();
             rowData[2] = listFunc.get(i).getCpf();
             rowData[3] = listFunc.get(i).getDataNascimento();
@@ -45,11 +46,11 @@ public class ListarUsuarios extends javax.swing.JFrame {
             model.addRow(rowData);
         }
         
-        for(int i = 0; i<listUsr.size();i++){
-            rowData[0] = listUsr.get(i).getId();
-            rowData[1] = listUsr.get(i).getNome();
-            rowData[2] = listUsr.get(i).getCpf();
-            rowData[3] = listUsr.get(i).getDataNascimento();
+        for(int i = 0; i<listAluno.size();i++){
+            rowData[0] = listAluno.get(i).getMatricula();
+            rowData[1] = listAluno.get(i).getNome();
+            rowData[2] = listAluno.get(i).getCpf();
+            rowData[3] = listAluno.get(i).getDataNascimento();
             rowData[4] = false;
             model.addRow(rowData);
         }
@@ -174,9 +175,9 @@ public class ListarUsuarios extends javax.swing.JFrame {
         EditarUsuario editUsr;
         boolean ehFunc = Boolean.parseBoolean(tblModel.getValueAt(jTable1.getSelectedRow(), 4).toString());
         if (ehFunc) {
-            editUsr = new EditarUsuario(this.getListaFunc().get(Integer.parseInt(tblModel.getValueAt(jTable1.getSelectedRow(), 0).toString())-1), ehFunc);
+            editUsr = new EditarUsuario(BibliotecaService.getFuncionario(Integer.parseInt(tblModel.getValueAt(jTable1.getSelectedRow(), 0).toString())-1), ehFunc);
         } else {
-            editUsr = new EditarUsuario(this.getListaUsr().get(Integer.parseInt(tblModel.getValueAt(jTable1.getSelectedRow(), 0).toString())-1), ehFunc);
+            editUsr = new EditarUsuario(BibliotecaService.getAluno(Integer.parseInt(tblModel.getValueAt(jTable1.getSelectedRow(), 0).toString())-1), ehFunc);
         }
         
         

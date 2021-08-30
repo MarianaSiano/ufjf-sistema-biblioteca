@@ -32,14 +32,16 @@ public class ListaLivrosUsuario extends javax.swing.JFrame {
         Object rowData[] = new Object[9];
         for(int i = 0; i<list.size();i++){
             rowData[0] = list.get(i).getId();
-            rowData[1] = list.get(i).getNome();
+            rowData[1] = list.get(i).getTitulo();
             rowData[2] = list.get(i).getAutor();
             rowData[3] = list.get(i).getEditora();
-            rowData[4] = list.get(i).getQuantAcervo();
-            rowData[5] = list.get(i).getQuantEmprestimo();
-            rowData[6] = list.get(i).getTotalDisponivel();
-            rowData[7] = list.get(i).getAno();
-            rowData[8] = list.get(i).getEdicao();
+            rowData[4] = list.get(i).getAno();
+            rowData[5] = list.get(i).getEdicao();
+            rowData[6] = list.get(i).getNumPaginas();
+            rowData[7] = list.get(i).getIsbn();
+            rowData[8] = list.get(i).getIdioma();
+            rowData[9] = list.get(i).getQuantDispNaoCircula();
+            rowData[10] = list.get(i).getQuantDispEmprestimo();
             model.addRow(rowData);
         }
     }
@@ -64,9 +66,24 @@ public class ListaLivrosUsuario extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Titulo", "Autor", "Editora", "Total No Acervo", "Total Para Emprestimo", "Total Disponivel", "Ano", "Edição"
+                "Id", "Titulo", "Autor", "Editora", "Ano", "Edição", "Nº Pág", "ISBN", "Idioma", "Qtd. Disp. Acervo", "Qtd. Disp. Empr."
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         Voltar.setText("Sair");

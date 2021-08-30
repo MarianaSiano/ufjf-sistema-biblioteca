@@ -1,21 +1,61 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+// JOÃO PAULO DE CARVALHO ARAÚJO - 202065564C
+
 package ufjf.dcc025.sistema.biblioteca.layouts;
 
-/**
- *
- * @author michel.andrade
- */
-public class ListarExemplar extends javax.swing.JFrame {
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+import ufjf.dcc025.sistema.biblioteca.entities.Exemplar;
+import ufjf.dcc025.sistema.biblioteca.entities.Livro;
+import ufjf.dcc025.sistema.biblioteca.services.BibliotecaService;
 
-    /**
-     * Creates new form ListarExemplar
-     */
-    public ListarExemplar() {
+public class ListaExemplares extends javax.swing.JFrame {
+
+    private List<Exemplar> list;
+    
+    private static Livro livroEx;
+    
+    public ListaExemplares() {
         initComponents();
+
+        
+        setLocationRelativeTo(null);
+    }
+    
+    public ListaExemplares(Livro livro) {
+        initComponents();
+        livroEx = livro;
+        
+        setLocationRelativeTo(null);
+        
+        this.list = livro.getExemplares().stream().collect(Collectors.toList());
+
+        this.addRowToJtable();
+        
+
+    }
+    List <Exemplar> getLista (){
+        return this.list;
+    }
+    
+    
+    
+
+    public void addRowToJtable(){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+        Object rowData[] = new Object[4];
+        for(int i = 0; i<list.size();i++){
+            rowData[0] = list.get(i).getId();
+            rowData[1] = list.get(i).getLivro().getId();
+            rowData[2] = list.get(i).getEhNaoCircula();
+            rowData[3] = list.get(i).getDisponivel();
+            model.addRow(rowData);
+        }
+     
     }
 
     /**
@@ -30,7 +70,6 @@ public class ListarExemplar extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         Cadastro = new javax.swing.JButton();
-        Editar = new javax.swing.JButton();
         Voltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -40,22 +79,30 @@ public class ListarExemplar extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "EhNaoCircula", "Disponivel", "Livro"
+                "Id", "Cód. Livro", "Não Circula", "Disponível"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         Cadastro.setText("Cadastro");
         Cadastro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CadastroActionPerformed(evt);
-            }
-        });
-
-        Editar.setText("Editar");
-        Editar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EditarActionPerformed(evt);
             }
         });
 
@@ -71,57 +118,42 @@ public class ListarExemplar extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1053, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 582, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
                         .addComponent(Voltar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(79, 79, 79)
-                        .addComponent(Editar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(83, 83, 83)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Cadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Cadastro)
-                    .addComponent(Voltar)
-                    .addComponent(Editar))
-                .addContainerGap(102, Short.MAX_VALUE))
+                    .addComponent(Voltar))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void CadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CadastroActionPerformed
-        NovoLivro telaLivro = new NovoLivro();
-        telaLivro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        telaLivro.setVisible(true);
+        NovoExemplar telaExemplar = new NovoExemplar();
+        telaExemplar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        telaExemplar.setVisible(true);
         dispose();
     }//GEN-LAST:event_CadastroActionPerformed
-
-    private void EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarActionPerformed
-
-        DefaultTableModel tblModel = (DefaultTableModel)jTable1.getModel();
-
-        EditarLivro telaLivro = new EditarLivro(this.getLista(),Integer.parseInt(tblModel.getValueAt(jTable1.getSelectedRow(), 0).toString())-1);
-        telaLivro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        telaLivro.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_EditarActionPerformed
 
     private void VoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VoltarActionPerformed
         MenuFuncionario menu = new MenuFuncionario();
         menu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         menu.setVisible(true);
-
+        
         dispose();
     }//GEN-LAST:event_VoltarActionPerformed
 
@@ -142,27 +174,27 @@ public class ListarExemplar extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListarExemplar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListaExemplares.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListarExemplar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListaExemplares.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListarExemplar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListaExemplares.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListarExemplar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListaExemplares.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ListarExemplar().setVisible(true);
+                new ListaExemplares().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cadastro;
-    private javax.swing.JButton Editar;
     private javax.swing.JButton Voltar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

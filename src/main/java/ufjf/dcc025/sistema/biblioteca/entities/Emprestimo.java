@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import ufjf.dcc025.sistema.biblioteca.services.BibliotecaService;
 
 @Entity
 @Table(name = "Emprestimo")
@@ -49,7 +50,7 @@ public class Emprestimo implements Serializable {
         
     }
 
-    public Emprestimo(Exemplar exemplar, Funcionario funcionario, Aluno aluno) {
+    public Emprestimo(Exemplar exemplar, Funcionario funcionario, Aluno aluno) throws Exception {
         Calendar cal = Calendar.getInstance();
         
         this.dataEmprestimo = cal.getTime();
@@ -58,8 +59,7 @@ public class Emprestimo implements Serializable {
         if (exemplar.getDisponivel()) {
             diasDevolucao = exemplar.getEhNaoCircula() ? 1 : 7;
         } else {
-            // TODO Fazer tratamento com janela
-            throw new IllegalArgumentException("Exemplar já se encontra emprestado!!");
+            throw new Exception("Exemplar já se encontra emprestado!!");
         }       
         
         cal.add(Calendar.DAY_OF_MONTH, diasDevolucao);
@@ -105,8 +105,8 @@ public class Emprestimo implements Serializable {
         return aluno;
     }
 
-    public void setDataDeDevolucao(Date dataDeDevolucao) {
-        this.dataDeDevolucao = dataDeDevolucao;
+    public void setDataDeDevolucao() {
+        this.dataDeDevolucao = new Date();
         exemplar.setDisponivel(true);
     }  
 
